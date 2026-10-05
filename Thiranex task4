@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+void display(char b[])
+{
+    cout << "\n";
+    cout << " " << b[0] << " | " << b[1] << " | " << b[2] << "\n";
+    cout << "---+---+---\n";
+    cout << " " << b[3] << " | " << b[4] << " | " << b[5] << "\n";
+    cout << "---+---+---\n";
+    cout << " " << b[6] << " | " << b[7] << " | " << b[8] << "\n";
+}
+
+bool winner(char b[], char p)
+{
+    int w[8][3] = {
+        {0,1,2}, {3,4,5}, {6,7,8},
+        {0,3,6}, {1,4,7}, {2,5,8},
+        {0,4,8}, {2,4,6}
+    };
+
+    for(int i = 0; i < 8; i++)
+    {
+        if(b[w[i][0]] == p &&
+           b[w[i][1]] == p &&
+           b[w[i][2]] == p)
+            return true;
+    }
+
+    return false;
+}
+
+int main()
+{
+    char board[9] = {'1','2','3','4','5','6','7','8','9'};
+    char player = 'X';
+    int pos;
+
+    for(int turn = 0; turn < 9; turn++)
+    {
+        display(board);
+
+        cout << "\nPlayer " << player << ", enter position (1-9): ";
+        cin >> pos;
+
+        if(pos < 1 || pos > 9)
+        {
+            cout << "Invalid position!\n";
+            turn--;
+            continue;
+        }
+
+        if(board[pos - 1] == 'X' || board[pos - 1] == 'O')
+        {
+            cout << "Position already occupied!\n";
+            turn--;
+            continue;
+        }
+
+        board[pos - 1] = player;
+
+        if(winner(board, player))
+        {
+            display(board);
+            cout << "\nPlayer " << player << " Wins!\n";
+            return 0;
+        }
+
+        if(player == 'X')
+            player = 'O';
+        else
+            player = 'X';
+    }
+
+    display(board);
+    cout << "\nGame Draw!\n";
+
+    return 0;
+}
